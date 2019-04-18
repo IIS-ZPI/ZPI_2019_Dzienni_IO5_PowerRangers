@@ -1,4 +1,4 @@
-public class Main implements IArithmeticsDiff, IArithmeticsMult {
+public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult {
 
     public static void main(String[] args) {
         System.out.println("PowerRangers:\nMikołaj Baran: developer\nIgor Jarek: developer\nKarolina Płóciennik: tester\nAbdalhadi Alwazir: developer\nOlena Hrynevych: operations ");
@@ -6,6 +6,10 @@ public class Main implements IArithmeticsDiff, IArithmeticsMult {
         System.out.println("Crivell\n");
         System.out.println("hadi97\n");
         System.out.println("Lola9614\n");
+    }
+
+    public double Division(double A, double B) {
+        return A / B;
     }
 
     @Override
