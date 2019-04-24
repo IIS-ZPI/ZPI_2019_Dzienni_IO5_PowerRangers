@@ -8,7 +8,7 @@ public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult,
         System.out.println("Lola9614\n");
     }
 
-    public double Division(double A, double B) {
+    public double Division(double A, double B) { /* dodawanie */
         return A / B;
     }
 
