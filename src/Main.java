@@ -8,6 +8,7 @@ public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult,
         System.out.println("Lola9614\n");
     }
 
+    //first comment Karolina Płóciennik
     public double Division(double A, double B) {
         return A / B;
     }
