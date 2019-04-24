@@ -1,4 +1,5 @@
 public interface IArithmeticsDiff {
-
-    double Difference(double A,double B);
+    //First
+    double Difference(double A,double B); //Third
+    //second
 }
