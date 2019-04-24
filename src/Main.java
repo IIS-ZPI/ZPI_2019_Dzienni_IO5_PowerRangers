@@ -12,7 +12,7 @@ public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult,
     public double Division(double A, double B) {
         return A / B;
     }
-    //hadi_task6
+
     @Override
     public double Multiplication(double A, double B) {
         return A*B;
