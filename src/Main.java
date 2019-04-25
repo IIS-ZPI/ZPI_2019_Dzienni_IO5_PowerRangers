@@ -1,15 +1,18 @@
 public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult, IArithmecticsAdd{
 
     public static void main(String[] args)  {
+        // comment three
         System.out.println("PowerRangers:\nMikołaj Baran: developer\nIgor Jarek: developer\nKarolina Płóciennik: tester\nAbdalhadi Alwazir: developer\nOlena Hrynevych: operations ");
         System.out.println("GitHub ID : igorJarek");
         System.out.println("Crivell\n");
         System.out.println("hadi97\n"); //comentOne_Hadi
         System.out.println("Lola9614\n");
+        // comment two
+        // comment Three
     }
 
     //first comment Karolina Płóciennik
-    public double Division(double A, double B) {
+    public double Division(double A, double B) { /* dzielenie dodawanie */
         return A / B;
     }
 
