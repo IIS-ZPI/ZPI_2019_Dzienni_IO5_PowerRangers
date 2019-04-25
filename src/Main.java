@@ -1,6 +1,7 @@
 public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult, IArithmecticsAdd{
 
     public static void main(String[] args)  {
+        // comment three
         System.out.println("PowerRangers:\nMikołaj Baran: developer\nIgor Jarek: developer\nKarolina Płóciennik: tester\nAbdalhadi Alwazir: developer\nOlena Hrynevych: operations ");
         System.out.println("GitHub ID : igorJarek");
         System.out.println("Crivell\n");
