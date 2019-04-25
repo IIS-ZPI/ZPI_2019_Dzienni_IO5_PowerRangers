@@ -6,6 +6,7 @@ public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult,
         System.out.println("Crivell\n");
         System.out.println("hadi97\n"); //comentOne_Hadi
         System.out.println("Lola9614\n");
+        // comment two
     }
 
     //first comment Karolina Płóciennik
