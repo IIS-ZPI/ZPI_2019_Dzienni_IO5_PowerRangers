@@ -9,7 +9,7 @@ public class Main implements IArithmeticDiv, IArithmeticsDiff, IArithmeticsMult,
     }
 
     //first comment Karolina Płóciennik
-    public double Division(double A, double B) {
+    public double Division(double A, double B) { /* dzielenie */
         return A / B;
     }
 
