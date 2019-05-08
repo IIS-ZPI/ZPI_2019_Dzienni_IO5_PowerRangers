@@ -1,4 +1,4 @@
-package providers.data;
+package caishenproject.caishen.providers.data;
 
 import java.util.List;
 
