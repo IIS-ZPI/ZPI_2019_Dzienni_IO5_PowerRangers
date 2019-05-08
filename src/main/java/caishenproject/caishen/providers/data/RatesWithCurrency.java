@@ -1,4 +1,4 @@
-package providers.data;
+package caishenproject.caishen.providers.data;
 
 public class RatesWithCurrency {
 
