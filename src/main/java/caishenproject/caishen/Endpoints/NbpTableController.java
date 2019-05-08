@@ -58,4 +58,19 @@ public class NbpTableController {
     public List<DataForResponse> getInvariableInTwoWeek(@PathVariable String currency){
         return nbpProvider.getInvariableSessionsInTwoWeeks(Currency.getInstance(currency));
     }
+
+    @GetMapping("/oneMonthDownward/{currency}")
+    public List<DataForResponse> getDownwardSessionInOneMonth(@PathVariable String currency){
+        return nbpProvider.getDownwardSessionsInOneMonth(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/oneMonthGrowth/{currency}")
+    public List<DataForResponse> getGrowthSessionInOneMonth(@PathVariable String currency){
+        return nbpProvider.getGrowthSessionsInOneMonth(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/oneMonthInvariable/{currency}")
+    public List<DataForResponse> getInvariableInOneMonth(@PathVariable String currency){
+        return nbpProvider.getInvariableSessionsInOneMonth(Currency.getInstance(currency));
+    }
 }

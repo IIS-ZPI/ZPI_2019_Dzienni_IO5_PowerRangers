@@ -20,8 +20,10 @@ public class NbpProvider {
     RestTemplate restTemplate = new RestTemplate();
     List<RatesWithCurrency> oneWeek;
     List<RatesWithCurrency> twoWeek;
+    List<RatesWithCurrency> oneMonth;
     List<DataForResponse> listOfCalculatedDiffrencesOneWeek = new ArrayList<>();
     List<DataForResponse> listOfCalculatedDiffrencesTwoWeek = new ArrayList<>();
+    List<DataForResponse> listOfCalculatedDiffrencesOneMonth = new ArrayList<>();
 
     public List<NbpTableA> getNbpTableA()
     {
@@ -61,6 +63,20 @@ public class NbpProvider {
         twoWeek = gson.fromJson(result, NBPTableWithCurrency.class).getRates();
     }
 
+    private void getAllSessionOneMonth(Currency userCurrency) {
+        LocalDate endDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        endDate.format(formatter);
+
+        LocalDate startDate = LocalDate.now().minusMonths(1);
+        startDate.format(formatter);
+
+        String urlOneMonth = "http://api.nbp.pl/api/exchangerates/rates/A/"+userCurrency.toString()+"/"+startDate+"/"+endDate;
+
+        String result = restTemplate.getForObject(urlOneMonth, String.class);
+        oneMonth = gson.fromJson(result, NBPTableWithCurrency.class).getRates();
+    }
+
 
     private void getDiffrencesSessionInOneWeek(Currency userCurrency){
         getAllSessionInOneWeek(userCurrency);
@@ -79,6 +95,16 @@ public class NbpProvider {
             double midI = twoWeek.get(i).getMid();
             double midIBefore = twoWeek.get(i-1).getMid();
             listOfCalculatedDiffrencesTwoWeek.add(new DataForResponse(midI - midIBefore,twoWeek.get(i).getEffectiveDate()));
+        }
+    }
+
+    private void getDiffrencesSessionInOneMonth(Currency userCurrency){
+        getAllSessionOneMonth(userCurrency);
+
+        for (int i = 1; i < oneMonth.size() ; i++) {
+            double midI = oneMonth.get(i).getMid();
+            double midIBefore = oneMonth.get(i-1).getMid();
+            listOfCalculatedDiffrencesOneMonth.add(new DataForResponse(midI - midIBefore,oneMonth.get(i).getEffectiveDate()));
         }
     }
 
@@ -106,13 +132,14 @@ public class NbpProvider {
     }
 
     public List<DataForResponse> getInvariableSessionsInWeek(Currency userCurrency){
-        getDiffrencesSessionInOneWeek(userCurrency);
 
-        List<DataForResponse> result = listOfCalculatedDiffrencesOneWeek.stream()
-                                                                        .filter(dataForResponse -> dataForResponse.getDifference() == 0)
-                                                                        .collect(Collectors.toList());
-        listOfCalculatedDiffrencesOneWeek.clear();
-        return result;
+        getAllSessionInOneWeek(userCurrency);
+
+        List<DataForResponse> dataForResponses = new ArrayList<>();
+
+        getDaysBetween(dataForResponses, oneWeek);
+
+        return dataForResponses;
     }
 
     public List<DataForResponse> getDownwardSessionsInTwoWeeks(Currency userCurrency){
@@ -139,13 +166,63 @@ public class NbpProvider {
     }
 
     public List<DataForResponse> getInvariableSessionsInTwoWeeks(Currency userCurrency){
-        getDiffrencesSessionInTwoWeek(userCurrency);
 
-        List<DataForResponse> result = listOfCalculatedDiffrencesTwoWeek.stream()
-                                                                        .filter(dataForResponse -> dataForResponse.getDifference() == 0)
+        getAllSessionTwoWeek(userCurrency);
+
+        List<DataForResponse> dataForResponses = new ArrayList<>();
+
+        getDaysBetween(dataForResponses, twoWeek);
+
+        return dataForResponses;
+    }
+
+    private void getDaysBetween(List<DataForResponse> dataForResponses, List<RatesWithCurrency> twoWeek) {
+        for (int i = 0; i < twoWeek.size() - 1; i++) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+            LocalDate from = LocalDate.parse(twoWeek.get(i).getEffectiveDate());
+            from.format(formatter);
+
+            LocalDate to = LocalDate.parse(twoWeek.get(i + 1).getEffectiveDate());
+            to.format(formatter);
+
+            for (LocalDate date = from.plusDays(1); date.isBefore(to); date = date.plusDays(1)) {
+                dataForResponses.add(new DataForResponse(twoWeek.get(i).getMid(),date.toString()));
+            }
+        }
+    }
+
+    public List<DataForResponse> getDownwardSessionsInOneMonth(Currency userCurrency){
+        getDiffrencesSessionInOneMonth(userCurrency);
+
+        List<DataForResponse> result = listOfCalculatedDiffrencesOneMonth.stream()
+                                                                        .filter(dataForResponse -> dataForResponse.getDifference() < 0)
                                                                         .collect(Collectors.toList());
-        listOfCalculatedDiffrencesTwoWeek.clear();
+        listOfCalculatedDiffrencesOneMonth.clear();
         return result;
+
+
+    }
+
+    public List<DataForResponse> getGrowthSessionsInOneMonth(Currency userCurrency){
+        getDiffrencesSessionInOneMonth(userCurrency);
+
+        List<DataForResponse> result = listOfCalculatedDiffrencesOneMonth.stream()
+                                                                        .filter(dataForResponse -> dataForResponse.getDifference() > 0)
+                                                                        .collect(Collectors.toList());
+        listOfCalculatedDiffrencesOneMonth.clear();
+        return result;
+
+    }
+
+    public List<DataForResponse> getInvariableSessionsInOneMonth(Currency userCurrency){
+
+        getAllSessionOneMonth(userCurrency);
+
+        List<DataForResponse> dataForResponses = new ArrayList<>();
+
+        getDaysBetween(dataForResponses, oneMonth);
+
+        return dataForResponses;
     }
 
 }
