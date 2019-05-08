@@ -23,4 +23,20 @@ public class NbpTableA {
     public List<Rates> getRates() {
         return rates;
     }
+
+    @Override public String toString() {
+        return "NbpTableA{"
+               + "table='"
+               + table
+               + '\''
+               + ", no='"
+               + no
+               + '\''
+               + ", effectiveDate='"
+               + effectiveDate
+               + '\''
+               + ", rates="
+               + rates
+               + '}';
+    }
 }
