@@ -88,4 +88,20 @@ public class NbpTableController {
     public List<DataForResponse> getInvariableInLastQuarter(@PathVariable String currency){
         return nbpProvider.getInvariableSessionsInLastQuarter(Currency.getInstance(currency));
     }
+
+
+    @GetMapping("/halfYearDownward/{currency}")
+    public List<DataForResponse> getDownwardSessionInHalfYear(@PathVariable String currency){
+        return nbpProvider.getDownwardSessionsHalfYear(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/halfYearGrowth/{currency}")
+    public List<DataForResponse> getGrowthSessionInHalfQuarter(@PathVariable String currency){
+        return nbpProvider.getGrowthSessionsHalfYear(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/halfYearInvariable/{currency}")
+    public List<DataForResponse> getInvariableInHalfYear(@PathVariable String currency){
+        return nbpProvider.getInvariableSessionsInHalfYear(Currency.getInstance(currency));
+    }
 }
