@@ -235,10 +235,10 @@ public class NbpProvider {
     private void getAllSessionLastQuarter(Currency userCurrency) {
 
         int whatQuarter = LocalDate.now().getMonthValue() % 4;
-        LocalDate endDate = LocalDate.now().minusMonths(whatQuarter);
+        LocalDate endDate = LocalDate.now().minusMonths(whatQuarter).withDayOfMonth(LocalDate.now().lengthOfMonth());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
         endDate.format(formatter);
-        LocalDate startDate = endDate.minusMonths(4);
+        LocalDate startDate = endDate.minusMonths(4).withDayOfMonth(1);
 
         startDate.format(formatter);
 
