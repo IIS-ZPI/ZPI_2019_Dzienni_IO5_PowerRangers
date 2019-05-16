@@ -7,10 +7,7 @@ import caishenproject.caishen.providers.data.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Currency;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,9 +18,11 @@ public class NbpProvider {
     List<RatesWithCurrency> oneWeek;
     List<RatesWithCurrency> twoWeek;
     List<RatesWithCurrency> oneMonth;
+    List<RatesWithCurrency> lastQuarter;
     List<DataForResponse> listOfCalculatedDiffrencesOneWeek = new ArrayList<>();
     List<DataForResponse> listOfCalculatedDiffrencesTwoWeek = new ArrayList<>();
     List<DataForResponse> listOfCalculatedDiffrencesOneMonth = new ArrayList<>();
+    List<DataForResponse> listOfCalculatedDiffrencesLastQuarter = new ArrayList<>();
 
     public List<NbpTableA> getNbpTableA()
     {
@@ -150,8 +149,16 @@ public class NbpProvider {
                                                                         .collect(Collectors.toList());
         listOfCalculatedDiffrencesTwoWeek.clear();
         return result;
+    }
 
+    private void getDiffrencesSessionInLastQuarter(Currency userCurrency){
+        getAllSessionLastQuarter(userCurrency);
 
+        for (int i = 1; i < lastQuarter.size() ; i++) {
+            double midI = lastQuarter.get(i).getMid();
+            double midIBefore = lastQuarter.get(i-1).getMid();
+            listOfCalculatedDiffrencesLastQuarter.add(new DataForResponse(midI - midIBefore,lastQuarter.get(i).getEffectiveDate()));
+        }
     }
 
     public List<DataForResponse> getGrowthSessionsInTwoWeeks(Currency userCurrency){
@@ -224,5 +231,54 @@ public class NbpProvider {
 
         return dataForResponses;
     }
+
+    private void getAllSessionLastQuarter(Currency userCurrency) {
+
+        int whatQuarter = LocalDate.now().getMonthValue() % 4;
+        LocalDate endDate = LocalDate.now().minusMonths(whatQuarter).withDayOfMonth(LocalDate.now().lengthOfMonth());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        endDate.format(formatter);
+        LocalDate startDate = endDate.minusMonths(4).withDayOfMonth(1);
+
+        startDate.format(formatter);
+
+        String urlLastQuarter = "http://api.nbp.pl/api/exchangerates/rates/A/"+userCurrency.toString()+"/"+startDate+"/"+endDate;
+
+        String result = restTemplate.getForObject(urlLastQuarter, String.class);
+        lastQuarter = gson.fromJson(result, NBPTableWithCurrency.class).getRates();
+    }
+
+    public List<DataForResponse> getInvariableSessionsInLastQuarter(Currency userCurrency){
+
+        getAllSessionLastQuarter(userCurrency);
+
+        List<DataForResponse> dataForResponses = new ArrayList<>();
+
+        getDaysBetween(dataForResponses, lastQuarter);
+
+        return dataForResponses;
+    }
+
+    public List<DataForResponse> getGrowthSessionsInLastQuarter(Currency userCurrency){
+        getDiffrencesSessionInLastQuarter(userCurrency);
+
+        List<DataForResponse> result = listOfCalculatedDiffrencesLastQuarter.stream()
+                .filter(dataForResponse -> dataForResponse.getDifference() < 0)
+                .collect(Collectors.toList());
+        listOfCalculatedDiffrencesLastQuarter.clear();
+        return result;
+    }
+
+    public List<DataForResponse> getDownwardSessionsInLastQuarter(Currency userCurrency){
+        getDiffrencesSessionInLastQuarter(userCurrency);
+
+        List<DataForResponse> result = listOfCalculatedDiffrencesLastQuarter.stream()
+                .filter(dataForResponse -> dataForResponse.getDifference() > 0)
+                .collect(Collectors.toList());
+        listOfCalculatedDiffrencesLastQuarter.clear();
+        return result;
+    }
+
+
 
 }
