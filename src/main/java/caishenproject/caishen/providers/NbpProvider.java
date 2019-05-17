@@ -20,11 +20,13 @@ public class NbpProvider {
     List<RatesWithCurrency> oneMonth;
     List<RatesWithCurrency> lastQuarter;
     List<RatesWithCurrency> halfYear;
+    List<RatesWithCurrency> lastYear;
     List<DataForResponse> listOfCalculatedDiffrencesOneWeek = new ArrayList<>();
     List<DataForResponse> listOfCalculatedDiffrencesTwoWeek = new ArrayList<>();
     List<DataForResponse> listOfCalculatedDiffrencesOneMonth = new ArrayList<>();
     List<DataForResponse> listOfCalculatedDiffrencesLastQuarter = new ArrayList<>();
     List<DataForResponse> getListOfCalculatedDiffrencesHalfYear = new ArrayList<>();
+    List<DataForResponse> getListOfCalculatedDiffrencesLastYear = new ArrayList<>();
 
     public List<NbpTableA> getNbpTableA() {
         final String uri = "http://api.nbp.pl/api/exchangerates/tables/A/";
@@ -91,6 +93,20 @@ public class NbpProvider {
         halfYear = gson.fromJson(result, NBPTableWithCurrency.class).getRates();
     }
 
+    private void getAllSessionLastYear(Currency userCurrency) {
+        LocalDate endDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        endDate.format(formatter);
+
+        LocalDate startDate = LocalDate.now().minusMonths(12);
+        startDate.format(formatter);
+
+        String urlLastYear = "http://api.nbp.pl/api/exchangerates/rates/A/" + userCurrency.toString() + "/" + startDate + "/" + endDate;
+
+        String result = restTemplate.getForObject(urlLastYear, String.class);
+        lastYear = gson.fromJson(result, NBPTableWithCurrency.class).getRates();
+    }
+
 
     private void getDifferencesSessionInOneWeek(Currency userCurrency) {
         getAllSessionInOneWeek(userCurrency);
@@ -120,6 +136,15 @@ public class NbpProvider {
     }
     private void getDifferencesSessionInHalfYear(Currency userCurrency) {
         getAllSessionHalfYear(userCurrency);
+
+        for (int i = 1; i < halfYear.size(); i++) {
+            double midI = halfYear.get(i).getMid();
+            getListOfCalculatedDiffrencesHalfYear.add(new DataForResponse(midI, halfYear.get(i).getEffectiveDate()));
+        }
+    }
+
+    private void getDifferencesSessionInLastYear(Currency userCurrency) {
+        getAllSessionLastYear(userCurrency);
 
         for (int i = 1; i < halfYear.size(); i++) {
             double midI = halfYear.get(i).getMid();
@@ -326,6 +351,38 @@ public class NbpProvider {
         return result;
     }
 
+
+    public List<DataForResponse> getDownwardSessionsLastYear(Currency userCurrency) {
+        getDifferencesSessionInLastYear(userCurrency);
+
+        List<DataForResponse> result = getListOfCalculatedDiffrencesHalfYear.stream()
+                                                                            .filter(dataForResponse -> dataForResponse.getMid() < 0)
+                                                                            .collect(Collectors.toList());
+        getListOfCalculatedDiffrencesLastYear.clear();
+        return result;
+
+    }
+
+    public List<DataForResponse> getGrowthSessionsLastYear(Currency userCurrency) {
+        getDifferencesSessionInLastYear(userCurrency);
+
+        List<DataForResponse> result = getListOfCalculatedDiffrencesHalfYear.stream()
+                                                                            .filter(dataForResponse -> dataForResponse.getMid() > 0)
+                                                                            .collect(Collectors.toList());
+        getListOfCalculatedDiffrencesLastYear.clear();
+        return result;
+    }
+    public List<DataForResponse> getInvariableSessionsLastYear(Currency userCurrency) {
+
+        getAllSessionLastYear(userCurrency);
+
+        List<DataForResponse> dataForResponses = new ArrayList<>();
+
+        getDaysBetween(dataForResponses, lastYear);
+
+        return dataForResponses;
+    }
+
     public List<DataForResponse> getAllListsInOneWeek(Currency userCurrency){
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsInWeek(userCurrency));
@@ -384,6 +441,19 @@ public class NbpProvider {
         return list.stream()
                    .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
                    .filter(dataForResponse -> LocalDate.parse(dataForResponse.getEffectiveDate()).getDayOfMonth() % 10 == 0)
+                   .collect(Collectors.toList());
+    }
+
+
+    public List<DataForResponse> getAllListsInLastYear(Currency userCurrency){
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsLastYear(userCurrency));
+        list.addAll(getGrowthSessionsLastYear(userCurrency));
+        list.addAll(getInvariableSessionsLastYear(userCurrency));
+
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .filter(dataForResponse -> LocalDate.parse(dataForResponse.getEffectiveDate()).getDayOfMonth() % 15 == 0)
                    .collect(Collectors.toList());
     }
 
