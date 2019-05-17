@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class CaishenApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(CaishenApplication.class, args);
     }
 

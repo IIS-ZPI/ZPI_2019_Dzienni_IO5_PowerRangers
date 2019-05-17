@@ -2,31 +2,23 @@ package caishenproject.caishen.providers.data;
 
 public class DataForResponse {
 
-    private double difference;
+    private double mid;
     private String effectiveDate;
 
-    public DataForResponse(double difference, String effectiveDate) {
-        this.difference = difference;
+    public DataForResponse(double mid, String effectiveDate) {
+        this.mid = mid;
         this.effectiveDate = effectiveDate;
     }
 
-    public double getDifference() {
-        return difference;
-    }
-
-    public void setDifference(double difference) {
-        this.difference = difference;
+    public double getMid() {
+        return mid;
     }
 
     public String getEffectiveDate() {
         return effectiveDate;
     }
 
-    public void setEffectiveDate(String effectiveDate) {
-        this.effectiveDate = effectiveDate;
-    }
-
     @Override public String toString() {
-        return "DataForResponse{" + "difference=" + difference + ", effectiveDate='" + effectiveDate + '\'' + '}';
+        return "DataForResponse{" + "mid=" + mid + ", effectiveDate='" + effectiveDate + '\'' + '}';
     }
 }
