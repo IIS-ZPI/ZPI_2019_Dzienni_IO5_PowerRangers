@@ -82,7 +82,7 @@ public class NbpProvider {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
         endDate.format(formatter);
 
-        LocalDate startDate = LocalDate.now().minusMonths(1);
+        LocalDate startDate = LocalDate.now().minusMonths(6);
         startDate.format(formatter);
 
         String urlHalfYear = "http://api.nbp.pl/api/exchangerates/rates/A/" + userCurrency.toString() + "/" + startDate + "/" + endDate;
@@ -123,8 +123,7 @@ public class NbpProvider {
 
         for (int i = 1; i < halfYear.size(); i++) {
             double midI = halfYear.get(i).getMid();
-            double midIBefore = halfYear.get(i - 1).getMid();
-            getListOfCalculatedDiffrencesHalfYear.add(new DataForResponse(midI - midIBefore, halfYear.get(i).getEffectiveDate()));
+            getListOfCalculatedDiffrencesHalfYear.add(new DataForResponse(midI, halfYear.get(i).getEffectiveDate()));
         }
     }
 
@@ -136,8 +135,6 @@ public class NbpProvider {
                 .collect(Collectors.toList());
         listOfCalculatedDiffrencesOneWeek.clear();
         return result;
-
-
     }
 
     public List<DataForResponse> getGrowthSessionsInWeek(Currency userCurrency) {
@@ -378,7 +375,16 @@ public class NbpProvider {
     }
 
 
+    public List<DataForResponse> getAllListsInHalfYear(Currency userCurrency){
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsHalfYear(userCurrency));
+        list.addAll(getGrowthSessionsHalfYear(userCurrency));
+        list.addAll(getInvariableSessionsInHalfYear(userCurrency));
 
-
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .filter(dataForResponse -> LocalDate.parse(dataForResponse.getEffectiveDate()).getDayOfMonth() % 10 == 0)
+                   .collect(Collectors.toList());
+    }
 
 }
