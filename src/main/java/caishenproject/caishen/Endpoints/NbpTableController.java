@@ -29,6 +29,11 @@ public class NbpTableController {
         return nbpProvider.getNbpTableA().get(0);
     }
 
+    @GetMapping("/oneWeek/{currency}")
+    public List<DataForResponse> getSessionInOneWeek(@PathVariable String currency){
+        return nbpProvider.getAllListsInOneWeek(Currency.getInstance(currency));
+    }
+
     @GetMapping("/oneWeekDownward/{currency}")
     public List<DataForResponse> getDownwardSessionInOneWeek(@PathVariable String currency){
         return nbpProvider.getDownwardSessionsInWeek(Currency.getInstance(currency));
