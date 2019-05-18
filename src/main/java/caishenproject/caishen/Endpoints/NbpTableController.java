@@ -34,6 +34,31 @@ public class NbpTableController {
         return nbpProvider.getAllListsInOneWeek(Currency.getInstance(currency));
     }
 
+    @GetMapping("/twoWeek/{currency}")
+    public List<DataForResponse> getSessionInTwoWeek(@PathVariable String currency){
+        return nbpProvider.getAllListsInTwoWeek(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/oneMonth/{currency}")
+    public List<DataForResponse> getSessionInLastMonth(@PathVariable String currency){
+        return nbpProvider.getAllListsInLastMonth(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/lastQuarter/{currency}")
+    public List<DataForResponse> getSessionInLastQuarter(@PathVariable String currency){
+        return nbpProvider.getAllListsInLastQuarter(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/lastHalfYear/{currency}")
+    public List<DataForResponse> getSessionInLastHlafYear(@PathVariable String currency){
+        return nbpProvider.getAllListsInHalfYear(Currency.getInstance(currency));
+    }
+
+    @GetMapping("/lastYear/{currency}")
+    public List<DataForResponse> getSessionInLastYear(@PathVariable String currency){
+        return nbpProvider.getAllListsInLastYear(Currency.getInstance(currency));
+    }
+
     @GetMapping("/oneWeekDownward/{currency}")
     public List<DataForResponse> getDownwardSessionInOneWeek(@PathVariable String currency){
         return nbpProvider.getDownwardSessionsInWeek(Currency.getInstance(currency));
