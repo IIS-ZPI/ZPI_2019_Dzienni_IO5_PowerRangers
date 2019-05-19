@@ -172,7 +172,7 @@ public class NbpProvider {
 
         for (int i = 1; i < halfYear.size(); i++) {
             double midI = halfYear.get(i).getMid();
-            listOfCalculatedDifferencesHalfYear.add(new DataForResponse(midI, halfYear.get(i).getEffectiveDate()));
+            listOfCalculatedDifferencesLastYear.add(new DataForResponse(midI, halfYear.get(i).getEffectiveDate()));
         }
     }
 
@@ -369,7 +369,7 @@ public class NbpProvider {
     public List<DataForResponse> getDownwardSessionsLastYear(Currency userCurrency) {
         getDifferencesSessionInLastYear(userCurrency);
 
-        List<DataForResponse> result = listOfCalculatedDifferencesHalfYear.stream()
+        List<DataForResponse> result = listOfCalculatedDifferencesLastYear.stream()
                 .filter(dataForResponse -> dataForResponse.getMid() < 0)
                 .collect(Collectors.toList());
         listOfCalculatedDifferencesLastYear.clear();
@@ -380,7 +380,7 @@ public class NbpProvider {
     public List<DataForResponse> getGrowthSessionsLastYear(Currency userCurrency) {
         getDifferencesSessionInLastYear(userCurrency);
 
-        List<DataForResponse> result = listOfCalculatedDifferencesHalfYear.stream()
+        List<DataForResponse> result = listOfCalculatedDifferencesLastYear.stream()
                 .filter(dataForResponse -> dataForResponse.getMid() > 0)
                 .collect(Collectors.toList());
         listOfCalculatedDifferencesLastYear.clear();
