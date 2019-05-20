@@ -1,6 +1,7 @@
 package caishenproject.caishen.providers;
 
-import caishenproject.caishen.providers.data.RatesWithCurrency;
+import caishenproject.caishen.providers.data.DataForResponse;
+
 
 import java.util.*;
 
@@ -10,10 +11,10 @@ final class Methods {
         throw new UnsupportedOperationException();
     }
 
-    public static double getMedian(List<RatesWithCurrency> rates) {
+    public static double getMedian(List<DataForResponse> rates) {
         List<Double> rateValues = new ArrayList<>();
         int arraySize = rates.size() - 1;
-        for (RatesWithCurrency rate : rates) {
+        for (DataForResponse rate : rates) {
             rateValues.add(rate.getMid());
         }
         Collections.sort(rateValues);
@@ -21,9 +22,9 @@ final class Methods {
                 (rateValues.get((arraySize / 2)) + rateValues.get((arraySize / 2) - 1)) / 2;
     }
 
-    public static double getDominant(List<RatesWithCurrency> rates) {
+    public static double getDominant(List<DataForResponse> rates) {
         Map<Double, Integer> rateValues = new HashMap<>();
-        for (RatesWithCurrency rate : rates) {
+        for (DataForResponse rate : rates) {
             if (!rateValues.isEmpty() && rateValues.containsKey(rate.getMid())) {
                 int count = rateValues.get(rate.getMid());
                 rateValues.replace(rate.getMid(), count + 1);
@@ -37,24 +38,24 @@ final class Methods {
     }
 
 
-    public static double getStandardDeviation(List<RatesWithCurrency> rates) {
+    public static double getStandardDeviation(List<DataForResponse> rates) {
         double mean = getMean(rates);
         double temp = 0.0;
-        for (RatesWithCurrency rate : rates) {
+        for (DataForResponse rate : rates) {
             temp += (rate.getMid() - mean) * (rate.getMid() - mean);
         }
         return temp / (rates.size() - 1);
     }
 
 
-    public static double calculateCoefficientOfVariation(List<RatesWithCurrency> rates) {
+    public static double calculateCoefficientOfVariation(List<DataForResponse> rates) {
         return getStandardDeviation(rates) / getMean(rates) * 100;
     }
 
 
-    private static double getMean(List<RatesWithCurrency> rates) {
+    private static double getMean(List<DataForResponse> rates) {
         double sum = 0.0;
-        for (RatesWithCurrency rate : rates) {
+        for (DataForResponse rate : rates) {
             sum += rate.getMid();
         }
         return sum / rates.size();
