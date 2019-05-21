@@ -49,4 +49,14 @@ public class ParamController {
                 paramService.lastWeekCoefficientOfVariation(currency) )
         );
     }
+
+    @GetMapping("/getParamLastQuarter/{currencyFromUser}")
+    public ResponseEntity<Param> getParamLastQuarter(@PathVariable String currencyFromUser){
+        Currency currency = Currency.getInstance(currencyFromUser);
+        return ResponseEntity.ok(new Param(paramService.lastQuarterMeoan(currency),
+                paramService.lastQuarterDominan(currency),
+                paramService.lastQuarterStandardDeviation(currency),
+                paramService.lastQuarterCoefficientOfVariation(currency) )
+        );
+    }
 }

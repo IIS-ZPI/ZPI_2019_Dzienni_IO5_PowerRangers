@@ -434,6 +434,16 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsLastQuarterWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsInLastQuarter(userCurrency));
+        list.addAll(getGrowthSessionsInLastQuarter(userCurrency));
+        list.addAll(getInvariableSessionsInLastQuarter(userCurrency));
+
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
 
     public List<DataForResponse> getAllListsInLastQuarterWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
