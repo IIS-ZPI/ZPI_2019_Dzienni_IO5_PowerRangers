@@ -29,4 +29,14 @@ public class ParamController {
                 paramService.oneWeekCoefficientOfVariation(currency) )
         );
     }
+
+    @GetMapping("/getParamTwoWeek/{currencyFromUser}")
+    public ResponseEntity<Param> getParamTwoWeek(@PathVariable String currencyFromUser){
+        Currency currency = Currency.getInstance(currencyFromUser);
+        return ResponseEntity.ok(new Param(paramService.twoWeekMeoan(currency),
+                paramService.twoWeekDominan(currency),
+                paramService.twoWeekStandardDeviation(currency),
+                paramService.twoWeekCoefficientOfVariation(currency) )
+        );
+    }
 }

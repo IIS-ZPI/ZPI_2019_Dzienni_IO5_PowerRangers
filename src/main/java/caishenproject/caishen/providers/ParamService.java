@@ -30,4 +30,20 @@ public class ParamService {
     public double oneWeekCoefficientOfVariation(Currency currency){
         return Methods.calculateCoefficientOfVariation(nbpProvider.getAllListsInOneWeek(currency));
     }
+
+    public double twoWeekMeoan(Currency currency){
+        return Methods.getMedian(nbpProvider.getAllListsInTwoWeek(currency));
+    }
+
+    public double twoWeekDominan(Currency currency){
+        return Methods.getMedian(nbpProvider.getAllListsInTwoWeek(currency));
+    }
+
+    public double twoWeekStandardDeviation(Currency currency){
+        return Methods.getStandardDeviation(nbpProvider.getAllListsInTwoWeek(currency));
+    }
+
+    public double twoWeekCoefficientOfVariation(Currency currency){
+        return Methods.calculateCoefficientOfVariation(nbpProvider.getAllListsInTwoWeek(currency));
+    }
 }
