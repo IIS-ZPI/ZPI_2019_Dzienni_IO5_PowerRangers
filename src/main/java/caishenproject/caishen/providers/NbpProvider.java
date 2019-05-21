@@ -170,9 +170,9 @@ public class NbpProvider {
     private void getDifferencesSessionInLastYear(Currency userCurrency) {
         getAllSessionLastYear(userCurrency);
 
-        for (int i = 1; i < halfYear.size(); i++) {
-            double midI = halfYear.get(i).getMid();
-            listOfCalculatedDifferencesLastYear.add(new DataForResponse(midI, halfYear.get(i).getEffectiveDate()));
+        for (int i = 1; i < lastYear.size(); i++) {
+            double midI = lastYear.get(i).getMid();
+            listOfCalculatedDifferencesLastYear.add(new DataForResponse(midI, lastYear.get(i).getEffectiveDate()));
         }
     }
 
@@ -410,8 +410,19 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsMonthWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsInOneMonth(userCurrency));
+        list.addAll(getGrowthSessionsInOneMonth(userCurrency));
+        list.addAll(getInvariableSessionsInOneMonth(userCurrency));
 
-    public List<DataForResponse> getAllListsInLastMonth(Currency userCurrency) {
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
+
+
+    public List<DataForResponse> getAllListsInLastMonthWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsInOneMonth(userCurrency));
         list.addAll(getGrowthSessionsInOneMonth(userCurrency));
@@ -423,8 +434,18 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsLastQuarterWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsInLastQuarter(userCurrency));
+        list.addAll(getGrowthSessionsInLastQuarter(userCurrency));
+        list.addAll(getInvariableSessionsInLastQuarter(userCurrency));
 
-    public List<DataForResponse> getAllListsInLastQuarter(Currency userCurrency) {
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
+
+    public List<DataForResponse> getAllListsInLastQuarterWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsInLastQuarter(userCurrency));
         list.addAll(getGrowthSessionsInLastQuarter(userCurrency));
@@ -437,7 +458,7 @@ public class NbpProvider {
     }
 
 
-    public List<DataForResponse> getAllListsInHalfYear(Currency userCurrency) {
+    public List<DataForResponse> getAllListsInHalfYearWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsHalfYear(userCurrency));
         list.addAll(getGrowthSessionsHalfYear(userCurrency));
@@ -449,8 +470,18 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsHalfYearWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsHalfYear(userCurrency));
+        list.addAll(getGrowthSessionsHalfYear(userCurrency));
+        list.addAll(getInvariableSessionsInHalfYear(userCurrency));
 
-    public List<DataForResponse> getAllListsInLastYear(Currency userCurrency) {
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
+
+    public List<DataForResponse> getAllListsInLastYearWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsLastYear(userCurrency));
         list.addAll(getGrowthSessionsLastYear(userCurrency));
@@ -462,4 +493,14 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsYearWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsLastYear(userCurrency));
+        list.addAll(getGrowthSessionsLastYear(userCurrency));
+        list.addAll(getInvariableSessionsLastYear(userCurrency));
+
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
 }

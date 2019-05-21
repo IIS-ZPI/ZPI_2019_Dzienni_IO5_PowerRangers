@@ -1,11 +1,11 @@
 package caishenproject.caishen.providers;
 
 import caishenproject.caishen.providers.data.DataForResponse;
-
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-final class Methods {
+final public class Methods {
 
     private Methods(){
         throw new UnsupportedOperationException();
