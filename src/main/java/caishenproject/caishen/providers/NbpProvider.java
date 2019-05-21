@@ -410,8 +410,19 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsMonthWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsInOneMonth(userCurrency));
+        list.addAll(getGrowthSessionsInOneMonth(userCurrency));
+        list.addAll(getInvariableSessionsInOneMonth(userCurrency));
 
-    public List<DataForResponse> getAllListsInLastMonth(Currency userCurrency) {
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
+
+
+    public List<DataForResponse> getAllListsInLastMonthWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsInOneMonth(userCurrency));
         list.addAll(getGrowthSessionsInOneMonth(userCurrency));
@@ -424,7 +435,7 @@ public class NbpProvider {
     }
 
 
-    public List<DataForResponse> getAllListsInLastQuarter(Currency userCurrency) {
+    public List<DataForResponse> getAllListsInLastQuarterWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsInLastQuarter(userCurrency));
         list.addAll(getGrowthSessionsInLastQuarter(userCurrency));
@@ -437,7 +448,7 @@ public class NbpProvider {
     }
 
 
-    public List<DataForResponse> getAllListsInHalfYear(Currency userCurrency) {
+    public List<DataForResponse> getAllListsInHalfYearWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsHalfYear(userCurrency));
         list.addAll(getGrowthSessionsHalfYear(userCurrency));
@@ -450,7 +461,7 @@ public class NbpProvider {
     }
 
 
-    public List<DataForResponse> getAllListsInLastYear(Currency userCurrency) {
+    public List<DataForResponse> getAllListsInLastYearWithFilter(Currency userCurrency) {
         List<DataForResponse> list = new ArrayList<>();
         list.addAll(getDownwardSessionsLastYear(userCurrency));
         list.addAll(getGrowthSessionsLastYear(userCurrency));

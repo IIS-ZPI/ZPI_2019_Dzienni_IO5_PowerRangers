@@ -3,9 +3,7 @@ package caishenproject.caishen.Endpoints;
 
 import caishenproject.caishen.providers.NbpProvider;
 import caishenproject.caishen.providers.data.DataForResponse;
-import caishenproject.caishen.providers.data.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import caishenproject.caishen.providers.data.NbpTableA;
@@ -43,22 +41,22 @@ public class NbpTableController {
 
     @GetMapping("/oneMonth/{currency}")
     public List<DataForResponse> getSessionInLastMonth(@PathVariable String currency) {
-        return nbpProvider.getAllListsInLastMonth(Currency.getInstance(currency));
+        return nbpProvider.getAllListsInLastMonthWithFilter(Currency.getInstance(currency));
     }
 
     @GetMapping("/lastQuarter/{currency}")
     public List<DataForResponse> getSessionInLastQuarter(@PathVariable String currency) {
-        return nbpProvider.getAllListsInLastQuarter(Currency.getInstance(currency));
+        return nbpProvider.getAllListsInLastQuarterWithFilter(Currency.getInstance(currency));
     }
 
     @GetMapping("/lastHalfYear/{currency}")
     public List<DataForResponse> getSessionInLastHlafYear(@PathVariable String currency) {
-        return nbpProvider.getAllListsInHalfYear(Currency.getInstance(currency));
+        return nbpProvider.getAllListsInHalfYearWithFilter(Currency.getInstance(currency));
     }
 
     @GetMapping("/lastYear/{currency}")
     public List<DataForResponse> getSessionInLastYear(@PathVariable String currency) {
-        return nbpProvider.getAllListsInLastYear(Currency.getInstance(currency));
+        return nbpProvider.getAllListsInLastYearWithFilter(Currency.getInstance(currency));
     }
 
     @GetMapping("/oneWeekDownward/{currency}")
