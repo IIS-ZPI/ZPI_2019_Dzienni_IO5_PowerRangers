@@ -3,7 +3,9 @@ package caishenproject.caishen.Endpoints;
 
 import caishenproject.caishen.providers.NbpProvider;
 import caishenproject.caishen.providers.data.DataForResponse;
+import caishenproject.caishen.providers.data.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import caishenproject.caishen.providers.data.NbpTableA;
