@@ -96,5 +96,21 @@ public class ParamService {
         return Methods.calculateCoefficientOfVariation(nbpProvider.getAllListsHalfYearWithoutFilter(currency));
     }
 
+    public double lastYearMeoan(Currency currency){
+        return Methods.getMedian(nbpProvider.getAllListsYearWithoutFilter(currency));
+    }
+
+    public double lastYearDominan(Currency currency){
+        return Methods.getMedian(nbpProvider.getAllListsYearWithoutFilter(currency));
+    }
+
+    public double lastYearStandardDeviation(Currency currency){
+        return Methods.getStandardDeviation(nbpProvider.getAllListsYearWithoutFilter(currency));
+    }
+
+    public double lastYearCoefficientOfVariation(Currency currency){
+        return Methods.calculateCoefficientOfVariation(nbpProvider.getAllListsYearWithoutFilter(currency));
+    }
+
 
 }

@@ -170,9 +170,9 @@ public class NbpProvider {
     private void getDifferencesSessionInLastYear(Currency userCurrency) {
         getAllSessionLastYear(userCurrency);
 
-        for (int i = 1; i < halfYear.size(); i++) {
-            double midI = halfYear.get(i).getMid();
-            listOfCalculatedDifferencesLastYear.add(new DataForResponse(midI, halfYear.get(i).getEffectiveDate()));
+        for (int i = 1; i < lastYear.size(); i++) {
+            double midI = lastYear.get(i).getMid();
+            listOfCalculatedDifferencesLastYear.add(new DataForResponse(midI, lastYear.get(i).getEffectiveDate()));
         }
     }
 
@@ -493,4 +493,14 @@ public class NbpProvider {
                 .collect(Collectors.toList());
     }
 
+    public List<DataForResponse> getAllListsYearWithoutFilter(Currency userCurrency) {
+        List<DataForResponse> list = new ArrayList<>();
+        list.addAll(getDownwardSessionsLastYear(userCurrency));
+        list.addAll(getGrowthSessionsLastYear(userCurrency));
+        list.addAll(getInvariableSessionsLastYear(userCurrency));
+
+        return list.stream()
+                   .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                   .collect(Collectors.toList());
+    }
 }
