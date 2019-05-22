@@ -18,8 +18,6 @@ public class NbpTableControllerTest {
     @LocalServerPort
     int port;
 
-    private NbpProvider nbpProvider  =  new NbpProvider();
-
     @Before
     public void setUp() {
         RestAssured.port = port;
