@@ -503,4 +503,24 @@ public class NbpProvider {
                    .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
                    .collect(Collectors.toList());
     }
+
+    public List<DataForResponse> distributionOfMonthlyChangesBetweenTwoCurrencies(Currency firstCurrency,Currency secoundCurrency){
+        List<DataForResponse> list = new ArrayList<>();
+        getAllSessionOneMonth(firstCurrency);
+        List<RatesWithCurrency> firstCurrList = oneMonth;
+        getAllSessionOneMonth(secoundCurrency);
+        List<RatesWithCurrency> secoundCurrList = oneMonth;
+
+        return list;
+    }
+
+    public List<DataForResponse> distributionOfQuarterChangesBetweenTwoCurrencies(Currency firstCurrency,Currency secoundCurrency){
+        List<DataForResponse> list = new ArrayList<>();
+        getAllSessionLastQuarter(firstCurrency);
+        List<RatesWithCurrency> firstCurrList = lastQuarter;
+        getAllSessionLastQuarter(secoundCurrency);
+        List<RatesWithCurrency> secoundCurrList = lastQuarter;
+
+        return list;
+    }
 }
