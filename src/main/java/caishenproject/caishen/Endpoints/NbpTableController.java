@@ -149,4 +149,14 @@ public class NbpTableController {
     public List<DataForResponse> getInvariableInLastYear(@PathVariable String currency) {
         return nbpProvider.getInvariableSessionsLastYear(Currency.getInstance(currency));
     }
+
+    @GetMapping("/distributionOfQuarterChanges/{currencyFirst}/{currencySecond}")
+    public List<DataForResponse> distributionOfQuarterChangesBetweenTwoCurrencies(@PathVariable String currencyFirst,@PathVariable String currencySecond) {
+        return nbpProvider.distributionOfQuarterChangesBetweenTwoCurrencies(Currency.getInstance(currencyFirst.toUpperCase()),Currency.getInstance(currencySecond.toUpperCase()));
+    }
+
+    @GetMapping("/distributionOfMonthlyChanges/{currencyFirst}/{currencySecond}")
+    public List<DataForResponse> distributionOfMonthlyChangesBetweenTwoCurrencies(@PathVariable String currencyFirst,@PathVariable String currencySecond) {
+        return nbpProvider.distributionOfMonthlyChangesBetweenTwoCurrencies(Currency.getInstance(currencyFirst.toUpperCase()),Currency.getInstance(currencySecond.toUpperCase()));
+    }
 }

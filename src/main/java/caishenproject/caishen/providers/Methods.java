@@ -1,6 +1,7 @@
 package caishenproject.caishen.providers;
 
 import caishenproject.caishen.providers.data.DataForResponse;
+import caishenproject.caishen.providers.data.RatesWithCurrency;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -74,6 +75,15 @@ final public class Methods {
         }
 
         return sortedMap;
+    }
+
+    public static List<DataForResponse> calculateDiffrenceBettwenSession(List<RatesWithCurrency> firstCurrList,List<RatesWithCurrency> secoundCurrList){
+        List<DataForResponse> list = new ArrayList<>();
+        int i = 0;
+        for (RatesWithCurrency rates: firstCurrList) {
+            list.add(new DataForResponse(rates.getMid()-secoundCurrList.get(i++).getMid(),rates.getEffectiveDate()));
+        }
+        return list;
     }
 
 

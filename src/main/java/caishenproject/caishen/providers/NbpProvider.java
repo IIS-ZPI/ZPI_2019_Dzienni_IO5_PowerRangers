@@ -505,22 +505,20 @@ public class NbpProvider {
     }
 
     public List<DataForResponse> distributionOfMonthlyChangesBetweenTwoCurrencies(Currency firstCurrency,Currency secoundCurrency){
-        List<DataForResponse> list = new ArrayList<>();
         getAllSessionOneMonth(firstCurrency);
         List<RatesWithCurrency> firstCurrList = oneMonth;
         getAllSessionOneMonth(secoundCurrency);
         List<RatesWithCurrency> secoundCurrList = oneMonth;
 
-        return list;
+        return Methods.calculateDiffrenceBettwenSession(firstCurrList,secoundCurrList);
     }
 
     public List<DataForResponse> distributionOfQuarterChangesBetweenTwoCurrencies(Currency firstCurrency,Currency secoundCurrency){
-        List<DataForResponse> list = new ArrayList<>();
         getAllSessionLastQuarter(firstCurrency);
         List<RatesWithCurrency> firstCurrList = lastQuarter;
         getAllSessionLastQuarter(secoundCurrency);
         List<RatesWithCurrency> secoundCurrList = lastQuarter;
 
-        return list;
+        return Methods.calculateDiffrenceBettwenSession(firstCurrList,secoundCurrList);
     }
 }
