@@ -3,3 +3,14 @@ jdk: oraclejdk11
 sudo: true
 before_install:
   - chmod +x mvnw
+
+notifications:
+  email:
+    recipients:
+      - anicaots@gmail.com
+      - 209434@edu.p.lodz.pl
+      - 211643@edu.p.lodz.pl
+      - hadielwazer97@gmail.com
+      - tarralan@wp.pl
+    on_success: always
+    on_failure: always
