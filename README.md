@@ -1,4 +1,8 @@
-DOKUMENTACJA RELEASE NOTES: 
+Master | Develop
+------------ | -------------
+[![Build Status](https://travis-ci.org/IIS-ZPI/ZPI_2019_Dzienni_IO5_PowerRangers.svg?branch=master)](https://travis-ci.org/IIS-ZPI/ZPI_2019_Dzienni_IO5_PowerRangers) | [![Build Status](https://travis-ci.org/IIS-ZPI/ZPI_2019_Dzienni_IO5_PowerRangers.svg?branch=develop)](https://travis-ci.org/IIS-ZPI/ZPI_2019_Dzienni_IO5_PowerRangers)
+
+DOKUMENTACJA RELEASE NOTES:
 
 - v.2.0.0 - https://github.com/IIS-ZPI/ZPI_2019_Dzienni_IO5_PowerRangers/wiki/Release-Note-2.0.0
 - v.2.1.0 - https://github.com/IIS-ZPI/ZPI_2019_Dzienni_IO5_PowerRangers/wiki/Release-Note-2.1.0
