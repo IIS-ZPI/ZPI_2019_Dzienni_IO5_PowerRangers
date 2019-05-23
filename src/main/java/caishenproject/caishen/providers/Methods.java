@@ -4,7 +4,9 @@ import caishenproject.caishen.providers.data.DataForResponse;
 import caishenproject.caishen.providers.data.RatesWithCurrency;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 final public class Methods {
 
@@ -83,7 +85,10 @@ final public class Methods {
         for (RatesWithCurrency rates: firstCurrList) {
             list.add(new DataForResponse(rates.getMid()-secoundCurrList.get(i++).getMid(),rates.getEffectiveDate()));
         }
-        return list;
+         return list.stream()
+                .sorted(Comparator.comparing(DataForResponse::getEffectiveDate))
+                .filter(dataForResponse -> LocalDate.parse(dataForResponse.getEffectiveDate()).getDayOfMonth() % 8 == 0)
+                .collect(Collectors.toList());
     }
 
 
